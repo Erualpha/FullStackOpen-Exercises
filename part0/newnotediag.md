@@ -4,13 +4,13 @@
 sequenceDiagram
     participant browser
     participant server
-
-    Note right of browser: The browser sends a POST request to create a new note
     
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
     server-->>browser: HTML document
     deactivate server
+
+    Note right of browser: The browser sends a POST request to create a new note, which causes the page to reload, which indicates that this is traditional page appliction.
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server

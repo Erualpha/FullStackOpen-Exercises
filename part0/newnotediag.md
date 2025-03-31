@@ -1,4 +1,4 @@
-# Exercises 0.4: New Sequence Diagram
+# Exercises 0.4: New Note Diagram
 
 ```mermaid
 sequenceDiagram
@@ -12,7 +12,8 @@ sequenceDiagram
     server-->>browser: HTML document
     deactivate server
 
-    Note right of browser: The request causes the page to reload and return an empty html file new_note, which indicates that this is traditional page appliction.
+    Note right of browser: The request causes the page to reload and return an empty html file new_note,
+    Note right of browser:which indicates that this is a traditional multi-page appliction.
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
@@ -32,7 +33,6 @@ sequenceDiagram
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: [{"content":"Venezuela","date":"2025-03-30T19:22:09.939Z"}, ... ]
-
     deactivate server
 
     Note right of browser: The browser processes the received JSON data and displays the notes

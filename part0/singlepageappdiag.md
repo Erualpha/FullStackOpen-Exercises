@@ -1,39 +1,31 @@
-# Exercises 0.5: New Sequence Diagram
-
-This is a sequence diagram illustrating the browser-server interaction:
+# Exercises 0.5: Single Page App Diagram
 
 ```mermaid
 sequenceDiagram
     participant browser
     participant server
 
-    %% The browser requests the notes from the server
-
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
     activate server
     server-->>browser: HTML document
     deactivate server
-
-    %% The browser requests the CSS file to style the page
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
     server-->>browser: CSS file
     deactivate server
 
-    %% The browser requests the JavaScript file to handle page functionality
-
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
     server-->>browser: Javascript file
     deactivate server
 
-    %% The browser requests the JSON data containing the notes
-
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: [{"content":"hey!","date":"2025-03-30T19:33:46.434Z"}, ... ]
-
-    %% The browser processes the received JSON data and displays the notes
-
     deactivate server
+
+    Note right of browser: Same process of retrieving and rendering the data with the given example diagram in exerciss 0.4
+    Note right of browser: The differnce is within the content of html and js file from the exercise 0.4. 
+    Note right of browser: From the name itself SPA, hence it is a modern, dynamic web app.
+    

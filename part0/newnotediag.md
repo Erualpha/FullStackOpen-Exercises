@@ -1,4 +1,4 @@
-# Example Sequence Diagram
+# Exercises 0.4: New Sequence Diagram
 
 This is a sequence diagram illustrating the browser-server interaction:
 

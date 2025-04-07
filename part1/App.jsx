@@ -5,3 +5,12 @@ const App = () => {
     </div>
     )
 }
+
+const Greet = (props) => {
+  return (
+    <div>
+    <p>Hello {props.name}</p>
+    </div>
+  )
+  
+}

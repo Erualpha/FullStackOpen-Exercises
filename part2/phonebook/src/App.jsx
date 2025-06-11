@@ -28,15 +28,9 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       return
     }
+
     const nameObject = { name: newName, number: newNumber }
 
-    // axios
-    //   .post('http://localhost:3001/persons', nameObject)
-    //   .then(response => {
-    //     setPersons(persons.concat(response.data))
-    //     setNewNumber('')
-    //     setNewNumber('')
-    //   })
     personService
       .create(nameObject)
       .then(returnedPerson => {
@@ -44,6 +38,18 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+  }
+
+  const handleDelete = (id) => {
+    const personToDelete = persons.find(person => person.id == id)
+    if (window.confirm(`Delete ${personToDelete.name} ?`)) {
+      personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+    } 
+    
   }
 
   const handleNameChange = (event) => {
@@ -70,24 +76,25 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <Filter 
-      value={filterPerson} 
-      onChange={handleFilterChange}
+        value={filterPerson} 
+        onChange={handleFilterChange}
       />
 
       <h3>add a new</h3>
 
       <PersonForm 
-      onSubmit={addName}
-      newName={newName}
-      handleNameChange={handleNameChange}
-      newNumber={newNumber}
-      handleNumberChange={handleNumberChange}
+        onSubmit={addName}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
       />
 
       <h3>Numbers</h3>
 
       <Persons 
-      persons={filterResult}
+        persons={filterResult}
+        removePerson={handleDelete}
       />
       
     </div>

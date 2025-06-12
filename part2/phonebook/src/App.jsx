@@ -12,6 +12,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterPerson, setFilterPerson] = useState('')
   const [notifMessage, setNotifMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
 
   useEffect(() => {
     axios
@@ -36,10 +38,17 @@ const App = () => {
         .update(id, updatedPerson)
         .then(returnedPerson => {
           setPersons(persons.map(p => p.id === id ? returnedPerson : p))
-          setNewName('')
-          setNewNumber('')
           setNotifMessage(`${returnedPerson.name}'s number is changed`)
           setTimeout(() => setNotifMessage(null), 5000)
+        })
+        .catch(error => {
+          setErrorMessage(
+            error.response && error.response.status === 404
+              ? `Information of ${newName} has been already removed from server`
+              : 'An error occurred'
+          )
+          setTimeout(() => setErrorMessage(null), 5000)
+          setPersons(persons.filter(p => p.id !== id))
         })
       }
       return
@@ -55,6 +64,14 @@ const App = () => {
         setNewNumber('')
         setNotifMessage(`Added ${returnedPerson.name}`)
         setTimeout(() => setNotifMessage(null), 5000)
+      })
+      .catch(error => {
+        setErrorMessage(
+          error.response && error.response.status === 404
+            ? `Information of '${newName}' has been already removed from server`
+            : 'An error occurred'
+        )
+        setTimeout(() => setErrorMessage(null), 5000)
       })
   }
 
@@ -93,7 +110,8 @@ const App = () => {
 
       <h2>Phonebook</h2>
 
-      <Notification message={notifMessage}/>
+      <Notification message={notifMessage} type="success" />
+      <Notification message={errorMessage} type="error" />
 
       <Filter 
         value={filterPerson} 

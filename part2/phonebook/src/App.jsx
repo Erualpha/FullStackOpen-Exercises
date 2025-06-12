@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notifications'
 import personService from './services/persons'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterPerson, setFilterPerson] = useState('')
+  const [notifMessage, setNotifMessage] = useState(null)
 
   useEffect(() => {
     axios
@@ -36,6 +38,8 @@ const App = () => {
           setPersons(persons.map(p => p.id === id ? returnedPerson : p))
           setNewName('')
           setNewNumber('')
+          setNotifMessage(`${returnedPerson.name}'s number is changed`)
+          setTimeout(() => setNotifMessage(null), 5000)
         })
       }
       return
@@ -49,6 +53,8 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setNotifMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => setNotifMessage(null), 5000)
       })
   }
 
@@ -87,12 +93,14 @@ const App = () => {
 
       <h2>Phonebook</h2>
 
+      <Notification message={notifMessage}/>
+
       <Filter 
         value={filterPerson} 
         onChange={handleFilterChange}
       />
 
-      <h3>add a new</h3>
+      <h3>Add a new</h3>
 
       <PersonForm 
         onSubmit={addName}

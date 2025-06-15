@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let persons = [
     { 
       "id": "1",
@@ -56,6 +58,19 @@ app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
   persons = persons.filter(person => person.id !== id)
   response.status(204).end()
+})
+
+app.post('/api/persons', (req, res) => {
+  const { name, number } = req.body
+
+  const newPerson = {
+    id: Math.floor(Math.random() * 1e7).toString(),
+    name,
+    number
+  }
+
+  persons.push(newPerson)
+  res.status(201).json(newPerson)
 })
 
 

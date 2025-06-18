@@ -1,11 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
-
+app.use(cors())
 app.use(express.json())
 
-morgan.token('post-body', (req) => {
+morgan.token('post-body', (req, res) => {
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 
@@ -68,16 +69,17 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (req, res) => {
-  const { name, number } = req.body
+app.post('/api/persons', (request, response) => {
+  const { name, number } = request.body
+  console.log('POST body:', request.body)
 
   if (!name || !number) {
-    return res.status(400).json({ error: 'name or number is missing' })
+    return response.status(400).json({ error: 'name or number is missing' })
   }
 
   const nameExists = persons.some(p => p.name === name)
   if (nameExists) {
-    return res.status(400).json({ error: 'name must be unique' })
+    return response.status(400).json({ error: 'name must be unique' })
   }
 
   const newPerson = {
@@ -87,14 +89,8 @@ app.post('/api/persons', (req, res) => {
   }
 
   persons.push(newPerson)
-  res.status(201).json(newPerson)
+  response.status(201).json(newPerson)
 })
-
-morgan.token('post-body', (req) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : ''
-})
-
-
 
 const PORT = 3001
 app.listen(PORT, () => {

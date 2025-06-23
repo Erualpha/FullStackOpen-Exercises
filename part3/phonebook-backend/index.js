@@ -15,28 +15,7 @@ morgan.token('post-body', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-body'))
 
-let persons = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
+let persons = []
 
 app.get('/', (request, response) => {
   response.send('<h1>Server is working!</h1>')
@@ -74,7 +53,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const { name, number } = request.body
   console.log('POST body:', request.body)
 
@@ -82,19 +61,16 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'name or number is missing' })
   }
 
-  const nameExists = persons.some(p => p.name === name)
-  if (nameExists) {
-    return response.status(400).json({ error: 'name must be unique' })
-  }
-
-  const newPerson = {
-    id: Math.floor(Math.random() * 1e7).toString(),
+  const newPerson = new Person({
     name,
     number
-  }
+  })
 
-  persons.push(newPerson)
-  response.status(201).json(newPerson)
+  newPerson.save()
+    .then(savedPerson => {
+      response.status(201).json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
 const PORT = process.env.PORT

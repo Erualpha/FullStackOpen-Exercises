@@ -82,20 +82,25 @@ app.post('/api/persons', (request, response, next) => {
 app.put('/api/persons/:id', (request, response, next) => {
   const { number } = request.body
 
-  Person.findById(request.params.id)
-    .then(person => {
-      if (!person) {
-        return response.status(404).end()
-      }
-
-      person.number = number
-
-      return person.save().then(updatedPerson => {
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { number },
+    {
+      new: true,
+      runValidators: true,
+      context: 'query'
+    }
+  )
+    .then(updatedPerson => {
+      if (updatedPerson) {
         response.json(updatedPerson)
-      })
+      } else {
+        response.status(404).end()
+      }
     })
     .catch(error => next(error))
 })
+
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.name, error.message)

@@ -66,11 +66,14 @@ const App = () => {
         setTimeout(() => setNotifMessage(null), 5000)
       })
       .catch(error => {
-        setErrorMessage(
-          error.response && error.response.status === 404
-            ? `Information of '${newName}' has been already removed from server`
-            : 'An error occurred'
-        )
+        if (error.response && error.response.status === 404) {
+          setErrorMessage(`Information of '${newName}' has already been removed from server`)
+        } else if (error.response && error.response.data && error.response.data.error) {
+          setErrorMessage(error.response.data.error)
+        } else {
+          setErrorMessage('An unexpected error occurred')
+        }
+
         setTimeout(() => setErrorMessage(null), 5000)
       })
   }

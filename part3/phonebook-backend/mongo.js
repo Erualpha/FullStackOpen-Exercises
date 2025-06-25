@@ -26,18 +26,18 @@ const newPerson = new Person({
 })
 
 if (process.argv.length > 4) {
-    newPerson.save().then(result => {
-        console.log(`added ${adddName} number ${addNumber} to phonebook`)
+  newPerson.save().then(() => {
+    console.log(`added ${adddName} number ${addNumber} to phonebook`)
     mongoose.connection.close()
-    })
+  })
 }
 
 if (process.argv.length < 4) {
-    Person.find({}).then(result => {
+  Person.find({}).then(result => {
     console.log('phonebook:')
     result.forEach(newPerson => {
-        console.log(`${newPerson.name} ${newPerson.number}`)
+      console.log(`${newPerson.name} ${newPerson.number}`)
     })
     mongoose.connection.close()
-})
+  })
 }

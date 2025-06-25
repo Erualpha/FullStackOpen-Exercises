@@ -1,2 +1,2 @@
-Deployed app link:
+Deployed phonebook-app link:
 https://render-phonebook-k5m0.onrender.com/

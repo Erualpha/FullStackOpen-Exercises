@@ -9,12 +9,17 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "node --test",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "test1": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.16.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0",
+    "jest": "^30.0.5",
+    "supertest": "^7.1.4"
   }
 }
